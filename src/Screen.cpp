@@ -63,11 +63,10 @@ bool Screen::init() {
 	 * fourth set Alpha
 	 */
 	for (int i = 0; i < SCREEN_WIDTH * SCREEN_HEIGHT; i++) {
-		m_buffer[i] = 0xFFFF00FF;
+		m_buffer[i] = 0x00000000;
 	}
 	return true;
 }
-
 
 // used to update the screen after any change is made to it
 void Screen::update() {
@@ -78,6 +77,11 @@ void Screen::update() {
 }
 
 void Screen::setPixel(int x, int y, Uint8 red, Uint8 green, Uint8 blue) {
+
+	// make sure pixels dont get plotted off the edge of the screen (inefficient)
+	if (x < 0 || x >= SCREEN_WIDTH || y < 0 || y >= SCREEN_HEIGHT) {
+		return;
+	}
 
 	Uint32 color = 0;
 
